@@ -3,12 +3,3 @@ node1
 node2
 node3
 
-
-[webdev]
-ftpserver
-
-
-[all:children]
-webserver 
-webdev
-
