@@ -34,6 +34,50 @@
       - name: Allow http/https
         command: firewall-cmd --zone=dmz --permanent --add-service=http --add-service=https
       
-     
+      #Netdata part starts here (still have issues with this one)
+      - name: "Install pre-requisites"
+        yum:
+           name: "{{ item }}"
+           state: present
+        with_items: 
+           - zlib-devel
+           - libuuid-devel
+           - libmnl-devel
+           - gcc
+           - make
+           - git
+           - atoconf
+           - autogen
+           - automake
+           - pkconfig
+           - curl
+           - jq 
+           - nodejs
+          
+
+      - name: "Clone repo"
+        git:
+        clone: yes
+        repo: https://github.com/firehol/netdata.git
+        dest: /tmp/netdata
+
+      - name: "Installation"
+        shell: cd /tmp/netdata/ && ./netdata-installer.sh --dont-wait --libs-are-really-here 
+        
+      - name: "Clean /tmp"
+        file:
+        path: /tmp/netdata
+        state: absent
+
+      - name: "KillAll"
+        shell: killall netdata
+
+      - name: "Daemon config"
+        systemd:
+          daemon_reload: yes
+          name: netdata
+          enabled: yes
+          state: started
+         #Netdata ends here
       - name: Allow netdata trafic
         command : firewall-cmd --permanent --zone=dmz --add-port=19999/tcp
