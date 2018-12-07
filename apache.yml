@@ -12,13 +12,9 @@
             name: httpd
             state: latest
 
-      - name: Download conf file
-        get_url:
-           url: ftp://172.161.25.160/pub/httpd.conf.j2
-           dest: /etc/httpd/conf/httpd.conf
       - name: page
         copy:
-           content: " Hello txtkrnl"
+           content: " Hello txtkrnl\n"
            dest: /var/www/html/index.html
 
       - name: enable firewall
