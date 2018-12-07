@@ -1,0 +1,12 @@
+[webservers]
+node1
+
+
+[webdev]
+ftpserver
+
+
+[all:children]
+webserver 
+webdev
+

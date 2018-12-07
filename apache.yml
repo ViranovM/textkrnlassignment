@@ -1,0 +1,36 @@
+---
+
+- name: httpd assignment
+  hosts: all
+  remote_user: ansible
+  become: true
+
+
+  tasks:  
+      - name: Install httpd
+        yum:
+            name: httpd
+            state: latest
+
+      - name: Download conf file
+        get_url:
+           url: ftp://172.161.25.160/pub/httpd.conf.j2
+           dest: /etc/httpd/conf/httpd.conf
+      - name: page
+        copy:
+           content: " Hello txtkrnl"
+           dest: /var/www/html/index.html
+
+      - name: enable firewall
+        firewalld:
+           service: httpd
+           state: enabled
+           immediate: yes
+           permanent: yes
+
+      - name: start httpd
+        service:
+            name: httpd
+            state: started
+            enabled: true
+
