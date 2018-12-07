@@ -1,3 +1,5 @@
+---
+
 - name: httpd assignment
   hosts: webservers
   remote_user: ansible
@@ -10,6 +12,7 @@
             name: httpd
             state: latest
 
+
       - name: page
         copy:
            content: " Hello txtkrnl\n"
@@ -21,3 +24,17 @@
             name: httpd
             state: started
             enabled: true
+
+      - name: Install firewalld
+        service:
+            name: firewalld
+            state: started
+            enabled: true
+      - name: Enable firewalld
+        service: name=firewalld state=started enabled=yes
+
+      - name: Set dmz as default policy
+        command: firewall-cmd --set-default-zone=dmz
+
+      - name: Allow http/https
+        command: firewall-cmd --zone=dmz --permanent --add-service=http --add-service=https
