@@ -78,6 +78,6 @@
           name: netdata
           enabled: yes
           state: started
-         #Netdata ends here
+         #Netdata ends here ( it will work if the part between the comments is removed)
       - name: Allow netdata trafic
         command : firewall-cmd --permanent --zone=dmz --add-port=19999/tcp
