@@ -1,12 +1,10 @@
----
-
 - name: httpd assignment
-  hosts: all
+  hosts: webservers
   remote_user: ansible
   become: true
 
 
-  tasks:  
+  tasks:
       - name: Install httpd
         yum:
             name: httpd
@@ -17,16 +15,9 @@
            content: " Hello txtkrnl\n"
            dest: /var/www/html/index.html
 
-      - name: enable firewall
-        firewalld:
-           service: httpd
-           state: enabled
-           immediate: yes
-           permanent: yes
 
       - name: start httpd
         service:
             name: httpd
             state: started
             enabled: true
-
